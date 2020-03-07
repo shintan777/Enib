@@ -16,5 +16,5 @@ def ocr(imgpath):
         (x, y, w, h) = (d['left'][i], d['top'][i], d['width'][i], d['height'][i])    
         edge = cv2.rectangle(edge, (x, y), (x + w, y + h), (130, 20, 243), 2)
     extracted_text = pytesseract.image_to_string(img, lang = 'eng')
-    print(extracted_text)
+    # print(extracted_text)
     return extracted_text, extracted_text.splitlines()
