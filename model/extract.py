@@ -8,7 +8,6 @@ import json
 def get_date(items):
 	#format d/m/y & d-m-y is support
     dates=set()
-    # print(items)
     for data in items:
         f1 = re.findall(r'\d{1,2}\/\d{1,2}\/\d{4}',data)
         f2 = re.findall(r'\d{4}\/\d{1,2}\/\d{1,2}',data)
@@ -23,15 +22,19 @@ def get_date(items):
             dates.add(i)
         for i in f4:
             dates.add(i)
-    return dates
+    return {
+        'date_set' : dates
+        }
 
 def get_invoice_no(data):
-    return ''
+    #get from tanvi
+
+    return {}
 
 def get_address(data):
-    import requests
-    x = requests.get('https://indian-cities-api-nocbegfhqg.now.sh/cities')
-    cities = json.loads(x.text)
+    with open('utils/cities.txt','r') as f:
+        cities = f.readlines()
+    cities = [i[3:-3].lower().strip().strip('\n') for i in cities][1:]
     idx = -1
     for j in cities:
         for i in data[:10]:
@@ -39,7 +42,7 @@ def get_address(data):
             if j['City'].lower() in comp:
                 idx = data.index(i)
                 break
-    print(data[max(0,idx-2):idx+1])
+    # print(data[max(0,idx-2):idx+1])
     return data[max(0,idx-2):idx+1]
 
 def get_store_name(data):

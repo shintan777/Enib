@@ -1,7 +1,7 @@
-from model.extract import get_date, get_invoice_no, get_address
+from model.extract import get_date, get_invoice_no, get_address, get_store_name
 import os
 
-for fname in (os.listdir('text'))[:14]:
+for fname in (os.listdir('text'))[:1]:
     print("=========Analysis for file {} ==============".format(fname))
     with open('text/' + fname, 'r') as f:
         data = f.readlines()
@@ -9,16 +9,16 @@ for fname in (os.listdir('text'))[:14]:
     # os.system('mkdir ' + folder_name)
     
     with open(folder_name+'/date.txt', 'w') as f:
-        # print(list(get_date(data)))
-        f.writelines(list(get_date(data)))
+        print(get_date(data))
+        # f.writelines(list(get_date(data)))
 
     with open(folder_name+'/invoice_no.txt', 'w') as f:
-        print(list(get_invoice_no(data)))
-        f.writelines(list(get_invoice_no(data)))
+        print(get_invoice_no(data))
+        # f.writelines(list(get_invoice_no(data)))
     
-    with open(folder_name+'/addre\n', '(Shop #:1ss.txt', 'w') as f:
+    with open(folder_name+'/address.txt','w') as f:
         print(get_address(data))
         # f.writelines(list(get_invoice_no(data)))
     with open(folder_name+'/store_name.txt', 'w') as f:
-        # print(list(get_store_name(data)))
-        f.writelines(list(str(get_store_name(data))))
+        print(list(get_store_name(data)))
+        # f.writelines(list(str(get_store_name(data))))

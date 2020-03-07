@@ -1,9 +1,10 @@
 import sys
 from model.ocr import ocr
+from model.extact  import *
 
 def run(imgpath):
     text, lines = ocr(imgpath)
-
+    
 
 
 
