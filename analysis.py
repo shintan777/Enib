@@ -1,4 +1,4 @@
-from model.extract import get_date, get_invoice_no, get_address, get_store_name
+from model.extract import get_date, get_time, get_invoice_no, get_address, get_store_name, get_total_amount
 import os
 
 for fname in sorted(os.listdir('text'))[:10]:
@@ -25,3 +25,9 @@ for fname in sorted(os.listdir('text'))[:10]:
     with open(folder_name+'/store_name.txt', 'w') as f:
         print((get_store_name(data)))
         # f.writelines(list(str(get_store_name(data))))
+    with open(folder_name+'/amout.txt', 'w') as f:
+        print((get_total_amount(data)))
+        # 
+    with open(folder_name+'/time.txt', 'w') as f:
+        print((get_time(data)))
+        # 

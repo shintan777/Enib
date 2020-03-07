@@ -8,12 +8,18 @@ import json
 def get_date(items):
 	#format d/m/y & d-m-y is support
     dates=set()
+    # print(items)
     for data in items:
-        f1 = re.findall(r'\d{1,2}\/\d{1,2}\/\d{4}',data)
-        f2 = re.findall(r'\d{4}\/\d{1,2}\/\d{1,2}',data)
-        f3 = re.findall(r'\d{2}\/\d{1,2}\/\d{1,2}',data)
-        f4 = re.findall(r'\d{1,2}\/\d{1,2}\/\d{2}',data)
-        #TODO: Add "." support i.e 12.12.12, sep/otc/yada        
+        if 'W.E.F' in data:
+            continue
+        f1 = re.findall(r'\d{1,2}\d[\-|\/|\.]\d{1,2}\d[\-|\/|\.]\d{4}',data)
+        f2 = re.findall(r'\d{4}\d[\-|\/|\.]\d{1,2}\d[\-|\/|\.]\d{1,2}',data)
+        f3 = re.findall(r'\d{2}\d[\-|\/|\.]\d{1,2}\d[\-|\/|\.]\d{1,2}',data)
+        f4 = re.findall(r'\d{1,2}\d[\-|\/|\.]\d{1,2}\d[\-|\/|\.]\d{2}',data)
+        f5 = re.findall(r'(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},\s+\d{4}',data)
+        f6 = re.findall(r'\d{1,2}[\,|\/|\-](Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)[\,|\/|\-]\d{4}',data)
+        f7 = re.findall(r'\d{1,2}[\,|\/|\-](Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)[\,|\/|\-]\d{2}',data)
+
         for i in f1:
             dates.add(i)
         for i in f2:
@@ -22,9 +28,59 @@ def get_date(items):
             dates.add(i)
         for i in f4:
             dates.add(i)
+        for i in f5:
+            dates.add(i)
+        for i in f6:
+            dates.add(i)
+        for i in f7:
+            dates.add(i)
+    dates = list(dates)
+    return_me = dates[0] if dates else None
     return {
-        'date_set' : dates
-        }
+        'date' : return_me
+    }
+
+def get_time(data):
+    time = set()
+
+    for items in data:
+        time_12 = re.findall(r'([0]?([1-9]|1[012])[:|-][0-5]?[0-9]?[:|-]?[0-5]?[0-9]\ ?([AaPp][Mm]|\ )?)', items)
+        time_24 = re.findall(r'^(2[0-3]|[01]?[0-9])[:|-]([0-5]*[0-9])[:|-]?([0-5]?[0-9])\ ?$', items) 
+
+        for i in time_12:
+            time.add(i)
+        for i in time_24:
+            time.add(i)
+
+    time = list(time)
+    return_me = time[0] if time else None
+    return{
+        'time' : return_me[0]
+    }    
+
+def get_total_amount(data):
+    total_amount = set()
+    for x in data:
+        # print(x)
+        if 'total' in x.lower().strip().strip('\n').split():
+            total_amount.add(x)
+        if 'net' in x.lower().strip().strip('\n').split():
+            if 'total' in x.lower().strip().strip('\n').split():
+                total_amount.add(x)
+            if 'amount' in x.lower().strip().strip('\n').split():
+                total_amount.add(x)
+    for x in total_amount:
+        if 'sub' in x.lower().strip().strip('\n').split():
+            total_amount.remove(x)
+    tlt_amt = ' '.join(list(total_amount))
+    # amt_set = set()
+    # linesplit=list(total_amount).split("TOTAL")[-1]
+    p = re.compile(r'\d+[\.|\,|\s]?\d+')
+    elem = p.findall(tlt_amt)
+    return_me = max(elem) if elem else None
+    return {
+        'total amount' : return_me
+    }
 
 def get_invoice_no(data):
     closest = None
