@@ -1,5 +1,6 @@
 Training\ Data\ Set
-#Data\*
+Data\*
+Data
 Training\ Data\ Set\*
 json\
 json\*
@@ -59,3 +60,7 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+parse_text
+parsed_text
+
