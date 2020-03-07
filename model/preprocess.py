@@ -2,7 +2,6 @@ import numpy as np
 import cv2
 import math
 import os
-from scipy import ndimage
 
 
 def check_image(impath):
@@ -16,9 +15,9 @@ def check_image(impath):
         dst = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
         # cv2.imshow("chutiyap",dst)    
         # cv2.waitKey(0)    
-        cv2.imwrite(dir + os.sep + 'rot90_'+fname,dst)
+        cv2.imwrite(dir + os.sep + fname,dst)
 
-lis = os.listdir('images')
+lis = os.listdir('Data')
 for images in lis:
-    impath = 'images/'+images
+    impath = 'Data/'+images
     check_image(impath)
