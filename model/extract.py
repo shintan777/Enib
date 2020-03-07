@@ -27,9 +27,32 @@ def get_date(items):
         }
 
 def get_invoice_no(data):
-    #get from tanvi
-
-    return {}
+    closest = None
+    min = 2000000
+    for i in data:
+        if 'bill' in i.lower().strip().split() or 'invoice' in i.lower().strip().split() :
+            individual = i.lower()
+            f1 = re.findall(r'[A-Za-z]*.[0-9]{1,50}',i)
+            bill_ind = individual.find('bill')
+            if(bill_ind == -1):
+                bill_ind = individual.find('invoice')
+            for regs in f1:
+                regs = regs.lower().strip()
+                try:
+                    ind = individual.find(regs)
+                except:
+                    continue
+                
+                if(ind>=bill_ind):
+                    diff = ind - bill_ind
+                else:
+                    diff = bill_ind - ind
+                if diff<min:
+                    min = diff
+                    closest = regs
+    return {
+        'invoice_no' : closest
+        }
 
 def get_address(data):
     with open('utils/cities.txt','r') as f:
@@ -62,7 +85,7 @@ def get_store_name(data):
                 ret_me = word
                 break
     if ret_me == []:
-        print("here")
+        # print("here")
         ret_me = [i.lower().strip().strip('\n') for i in data[1:2]]
         ret_me = ' '.join(ret_me)
     return {

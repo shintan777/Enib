@@ -1,7 +1,7 @@
 from model.extract import get_date, get_invoice_no, get_address, get_store_name
 import os
 
-for fname in (os.listdir('text'))[:10]:
+for fname in sorted(os.listdir('text'))[:10]:
     print("=========Analysis for file {} ==============".format(fname))
     with open('text/' + fname, 'r') as f:
         data = f.readlines()
