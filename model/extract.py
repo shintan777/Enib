@@ -39,14 +39,32 @@ def get_address(data):
     for j in cities:
         for i in data[:10]:
             comp = i.lower().strip().strip('\n').split()
-            if j['City'].lower() in comp:
+            if j in comp:
                 idx = data.index(i)
                 break
-    # print(data[max(0,idx-2):idx+1])
-    return data[max(0,idx-2):idx+1]
+    ret_me = data[max(0,idx-2):idx+1]
+    if ret_me == []:
+        ret_me = [i.lower().strip().strip('\n') for i in data[1:5]]
+    return {
+        'address' : ' '.join(ret_me)
+    }
 
 def get_store_name(data):
-    store_name = set()
     existing_stores = os.listdir('Training Data Set')
     existing_stores.append('PHOENIX MALL')
-    
+    stores = [i.lower().strip('\n') for i in existing_stores]
+    ret_me = []
+    idx = 0
+    for i in data[:5]:
+        comp = i.lower().strip().strip('\n').split()
+        for word in comp:    
+            if word in stores:
+                ret_me = word
+                break
+    if ret_me == []:
+        print("here")
+        ret_me = [i.lower().strip().strip('\n') for i in data[1:2]]
+        ret_me = ' '.join(ret_me)
+    return {
+        'store_name' : ret_me
+    }
