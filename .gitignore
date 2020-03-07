@@ -1,7 +1,10 @@
-
 Training\ Data\ Set
 #Data\*
 Training\ Data\ Set\*
 json\
 json\*
 json
+__pycache__
+__pycache__/*
+*/__pycache__/*
+*.pyc
