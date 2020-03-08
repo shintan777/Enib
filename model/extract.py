@@ -55,7 +55,7 @@ def get_time(data):
     time = list(time)
     return_me = time[0] if time else None
     return{
-        'time' : return_me[0]
+        'time' : return_me
     }    
 
 def get_total_amount(data):
@@ -79,7 +79,7 @@ def get_total_amount(data):
     elem = p.findall(tlt_amt)
     return_me = max(elem) if elem else None
     return {
-        'total amount' : return_me
+        'total_amount' : return_me
     }
 
 def get_invoice_no(data):
@@ -147,3 +147,24 @@ def get_store_name(data):
     return {
         'store_name' : ret_me
     }
+
+def get_items(data):
+    for i in range(len(data)):
+        cur = data[i].lower().strip().split()
+        if('item' in cur or 'product' in cur or 'qty' in cur):
+            item_ind = i+1
+            break
+    else:
+        item_ind = 9
+    for i in range(len(data)):
+        cur = data[i].lower().strip().split()
+        if('subtotal' in cur or 'total' in cur):
+            subtot_ind = i+1
+            break
+    else:
+        subtot_ind = -10
+    return {
+        'items' : data[item_ind:subtot_ind+1]
+    }
+
+
